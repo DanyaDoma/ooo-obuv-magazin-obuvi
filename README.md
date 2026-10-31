@@ -38,11 +38,7 @@ SELECT COUNT(*) FROM order_items;  -- 20
 SELECT SUM(total_amount) FROM orders; -- 290337.56
 ```
 
-Приложение подключается к базе под `root` с паролем `root` (локальный стенд). Если пароль другой, поправьте строку подключения в `src/ShoeStore.App/appsettings.json`:
-
-```
-"Server=127.0.0.1;Port=3306;Database=shoe_store;User ID=root;Password=ВАШ_ПАРОЛЬ;Character Set=utf8mb4;Connection Timeout=5;"
-```
+Приложение подключается к базе под `root` с паролем `root` (локалка).
 
 Файл копируется в папку сборки, поэтому после правки выполните пересборку.
 
