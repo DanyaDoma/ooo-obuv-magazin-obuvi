@@ -1,0 +1,545 @@
+<Window x:Class="ShoeStore.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ООО «Обувь» — учёт заказов"
+        Height="860"
+        Width="1380"
+        MinHeight="720"
+        MinWidth="1120"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PageBackgroundBrush}"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="68" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="34" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#101828" Padding="28,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="38" Height="38" CornerRadius="11" Background="{StaticResource BrandGradientBrush}">
+                        <TextBlock Text="&#xE719;"
+                                   FontFamily="{StaticResource IconFont}"
+                                   FontSize="17"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="ООО «Обувь»"
+                                   FontFamily="{StaticResource DisplayFont}"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="White" />
+                        <TextBlock Text="Учёт заказов"
+                                   FontSize="11.5"
+                                   Foreground="#8FA0B8"
+                                   Margin="0,1,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <Border Grid.Column="2"
+                        Background="#1B2436"
+                        CornerRadius="21"
+                        Padding="6,5"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="26" Height="26" CornerRadius="13" Background="#26334A">
+                            <TextBlock Text="&#xE77B;"
+                                       FontFamily="{StaticResource IconFont}"
+                                       FontSize="12"
+                                       Foreground="#F0B37E"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock x:Name="UserCaption"
+                                   Foreground="#D5DCE7"
+                                   FontSize="12.5"
+                                   VerticalAlignment="Center"
+                                   Margin="9,0,10,0"
+                                   MaxWidth="520"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <TabControl x:Name="MainTabs"
+                    Grid.Row="1"
+                    Margin="28,20,28,18"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    SelectionChanged="MainTabs_SelectionChanged">
+            <TabItem x:Name="UsersTab" Header="Пользователи" Tag="&#xE716;">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Пользователи" Style="{StaticResource PageTitle}" />
+                        <TextBlock Text="Сотрудники компании, их роли и отделы"
+                                   Style="{StaticResource PageSubtitle}" />
+                    </StackPanel>
+
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Padding="18" Margin="0,18,0,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Поиск по ФИО" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Grid.Column="1"
+                                       Text="Роль"
+                                       Style="{StaticResource FieldLabel}"
+                                       Margin="0,0,16,0" />
+                            <TextBlock Grid.Column="2"
+                                       Text="Отдел"
+                                       Style="{StaticResource FieldLabel}"
+                                       Margin="0,0,16,0" />
+
+                            <Grid Grid.Row="1" Margin="0,7,16,0">
+                                <TextBox x:Name="UserSearchBox"
+                                         Padding="36,0,12,0"
+                                         KeyDown="UserSearch_KeyDown" />
+                                <TextBlock Text="&#xE721;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="13"
+                                           Foreground="{StaticResource SubtleBrush}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="13,0,0,0"
+                                           IsHitTestVisible="False" />
+                            </Grid>
+
+                            <ComboBox x:Name="RoleFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,7,16,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectionChanged="UserFilters_Changed" />
+
+                            <ComboBox x:Name="DepartmentFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="2"
+                                      Margin="0,7,16,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectionChanged="UserFilters_Changed" />
+
+                            <Button Grid.Row="1"
+                                    Grid.Column="3"
+                                    Margin="0,7,0,0"
+                                    Click="UserSearch_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE721;"
+                                               FontFamily="{StaticResource IconFont}"
+                                               FontSize="12"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Найти"
+                                               Margin="8,0,0,0"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="2" Style="{StaticResource Card}" ClipToBounds="True">
+                        <DataGrid x:Name="UsersGrid">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="*" />
+                                <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="260" />
+                                <DataGridTextColumn Header="Роль" Binding="{Binding Role.Name}" Width="220" />
+                                <DataGridTextColumn Header="Отдел" Binding="{Binding Department.Name}" Width="200" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="ProductsTab" Header="Товары" Tag="&#xE7BF;">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Товары" Style="{StaticResource PageTitle}" />
+                        <TextBlock Text="Каталог, цены, скидки и остатки на складе"
+                                   Style="{StaticResource PageSubtitle}" />
+                    </StackPanel>
+
+                    <Border x:Name="ProductsFilterPanel"
+                            Grid.Row="1"
+                            Style="{StaticResource Card}"
+                            Padding="18,16,18,8"
+                            Margin="0,18,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.4*" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Поиск" Style="{StaticResource FieldLabel}" />
+                            <TextBlock Grid.Column="2"
+                                       Text="Категория"
+                                       Style="{StaticResource FieldLabel}" />
+                            <TextBlock Grid.Column="4"
+                                       Text="Поставщик"
+                                       Style="{StaticResource FieldLabel}" />
+                            <TextBlock Grid.Column="6"
+                                       Text="Производитель"
+                                       Style="{StaticResource FieldLabel}" />
+                            <TextBlock Grid.Column="8"
+                                       Text="Сортировка"
+                                       Style="{StaticResource FieldLabel}" />
+
+                            <Grid Grid.Row="1" Margin="0,7,0,0">
+                                <TextBox x:Name="ProductSearchBox"
+                                         Padding="36,0,12,0"
+                                         KeyDown="ProductSearch_KeyDown" />
+                                <TextBlock Text="&#xE721;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="13"
+                                           Foreground="{StaticResource SubtleBrush}"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="13,0,0,0"
+                                           IsHitTestVisible="False" />
+                            </Grid>
+
+                            <ComboBox x:Name="CategoryFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="2"
+                                      Margin="0,7,0,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectionChanged="ProductFilter_Changed" />
+
+                            <ComboBox x:Name="SupplierFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="4"
+                                      Margin="0,7,0,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectionChanged="ProductFilter_Changed" />
+
+                            <ComboBox x:Name="ManufacturerFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="6"
+                                      Margin="0,7,0,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Id"
+                                      SelectionChanged="ProductFilter_Changed" />
+
+                            <ComboBox x:Name="SortFilter"
+                                      Grid.Row="1"
+                                      Grid.Column="8"
+                                      Margin="0,7,0,0"
+                                      DisplayMemberPath="Name"
+                                      SelectedValuePath="Key"
+                                      SelectionChanged="ProductFilter_Changed" />
+
+                            <CheckBox x:Name="DiscountOnlyCheck"
+                                      Grid.Row="1"
+                                      Grid.Column="10"
+                                      Content="Только со скидкой"
+                                      VerticalAlignment="Center"
+                                      Margin="0,7,0,0"
+                                      Checked="ProductFilter_Changed"
+                                      Unchecked="ProductFilter_Changed" />
+
+                            <Button Grid.Row="1"
+                                    Grid.Column="12"
+                                    Height="40"
+                                    Margin="0,7,0,0"
+                                    Click="ProductFilterApply_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE71C;"
+                                               FontFamily="{StaticResource IconFont}"
+                                               FontSize="12"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Показать"
+                                               Margin="8,0,0,0"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel x:Name="ProductActions"
+                                Grid.Row="2"
+                                Orientation="Horizontal"
+                                Margin="0,0,0,12">
+                        <Button Height="38" Margin="0,0,8,0" Click="AddProduct_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE710;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Добавить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Height="38"
+                                Margin="0,0,8,0"
+                                Style="{StaticResource SecondaryButton}"
+                                Click="EditProduct_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE70F;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Изменить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Height="38"
+                                Style="{StaticResource DangerButton}"
+                                Click="DeleteProduct_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE74D;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Удалить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Border Grid.Row="3" Style="{StaticResource Card}" ClipToBounds="True">
+                        <DataGrid x:Name="ProductsGrid">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Артикул" Binding="{Binding Sku}" Width="110" />
+                                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*" />
+                                <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" Width="150" />
+                                <DataGridTextColumn Header="Поставщик" Binding="{Binding SupplierName}" Width="150" />
+                                <DataGridTextColumn Header="Производитель" Binding="{Binding ManufacturerName}" Width="150" />
+                                <DataGridTextColumn Header="Цена, ₽"
+                                                    Binding="{Binding Price, StringFormat={}{0:N2}}"
+                                                    Width="100"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                                <DataGridTextColumn Header="Скидка"
+                                                    Binding="{Binding DiscountPercent, StringFormat={}{0:0.##}%}"
+                                                    Width="80"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                                <DataGridTextColumn Header="Итоговая цена, ₽"
+                                                    Binding="{Binding FinalPrice, StringFormat={}{0:N2}}"
+                                                    Width="130"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                                <DataGridTextColumn Header="Остаток"
+                                                    Binding="{Binding StockQty}"
+                                                    Width="90"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="OrdersTab" Header="Заказы" Tag="&#xE8A5;">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Заказы" Style="{StaticResource PageTitle}" />
+                        <TextBlock Text="Оформленные заказы и состав позиций"
+                                   Style="{StaticResource PageSubtitle}" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="OrderActions"
+                                Grid.Row="1"
+                                Orientation="Horizontal"
+                                Margin="0,18,0,12">
+                        <Button Height="38" Margin="0,0,8,0" Click="AddOrder_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE710;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Добавить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Height="38"
+                                Margin="0,0,8,0"
+                                Style="{StaticResource SecondaryButton}"
+                                Click="EditOrder_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE70F;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Изменить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                        <Button Height="38"
+                                Style="{StaticResource DangerButton}"
+                                Click="DeleteOrder_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE74D;"
+                                           FontFamily="{StaticResource IconFont}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Удалить"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <Border Grid.Row="2" Style="{StaticResource Card}" ClipToBounds="True" Margin="0,0,0,14">
+                        <DataGrid x:Name="OrdersGrid" SelectionChanged="OrdersGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding Id}" Width="70" />
+                                <DataGridTextColumn Header="Дата заказа"
+                                                    Binding="{Binding OrderDate, StringFormat={}{0:dd.MM.yyyy}}"
+                                                    Width="120" />
+                                <DataGridTextColumn Header="Дата выдачи"
+                                                    Binding="{Binding DeliveryDate, StringFormat={}{0:dd.MM.yyyy}}"
+                                                    Width="120" />
+                                <DataGridTextColumn Header="Статус" Binding="{Binding StatusName}" Width="140" />
+                                <DataGridTextColumn Header="Клиент" Binding="{Binding UserFullName}" Width="*" />
+                                <DataGridTextColumn Header="Пункт выдачи" Binding="{Binding PickupPoint.Display}" Width="320" />
+                                <DataGridTextColumn Header="Сумма, ₽"
+                                                    Binding="{Binding TotalAmount, StringFormat={}{0:N2}}"
+                                                    Width="120"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                                <DataGridTextColumn Header="Позиций"
+                                                    Binding="{Binding ItemsCount}"
+                                                    Width="90"
+                                                    HeaderStyle="{StaticResource RightHeader}"
+                                                    ElementStyle="{StaticResource RightCellText}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+
+                    <Border Grid.Row="3" Style="{StaticResource Card}" ClipToBounds="True">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Border Padding="18,13"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <TextBlock Text="Состав заказа" Style="{StaticResource SectionTitle}" />
+                                    <TextBlock Text="Выберите заказ в таблице выше"
+                                               FontSize="11.5"
+                                               Foreground="{StaticResource SubtleBrush}"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+
+                            <DataGrid x:Name="OrderItemsGrid" Grid.Row="1">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Артикул" Binding="{Binding Sku}" Width="120" />
+                                    <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*" />
+                                    <DataGridTextColumn Header="Кол-во"
+                                                        Binding="{Binding Quantity}"
+                                                        Width="90"
+                                                        HeaderStyle="{StaticResource RightHeader}"
+                                                        ElementStyle="{StaticResource RightCellText}" />
+                                    <DataGridTextColumn Header="Цена, ₽"
+                                                        Binding="{Binding UnitPrice, StringFormat={}{0:N2}}"
+                                                        Width="110"
+                                                        HeaderStyle="{StaticResource RightHeader}"
+                                                        ElementStyle="{StaticResource RightCellText}" />
+                                    <DataGridTextColumn Header="Скидка"
+                                                        Binding="{Binding DiscountPercent, StringFormat={}{0:0.##}%}"
+                                                        Width="90"
+                                                        HeaderStyle="{StaticResource RightHeader}"
+                                                        ElementStyle="{StaticResource RightCellText}" />
+                                    <DataGridTextColumn Header="Сумма, ₽"
+                                                        Binding="{Binding LineTotal, StringFormat={}{0:N2}}"
+                                                        Width="130"
+                                                        HeaderStyle="{StaticResource RightHeader}"
+                                                        ElementStyle="{StaticResource RightCellText}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="2"
+                Background="White"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="28,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="7" Height="7" Fill="#0E9F6E" VerticalAlignment="Center" />
+                    <TextBlock x:Name="StatusText"
+                               Text="Готово"
+                               Foreground="{StaticResource MutedBrush}"
+                               FontSize="12"
+                               Margin="8,0,0,0"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+                <TextBlock Text="MySQL 8 · локальная база"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource SubtleBrush}"
+                           FontSize="11.5" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,212 @@
+<Window x:Class="ShoeStore.App.Views.OrderEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Заказ"
+        Height="860"
+        Width="1040"
+        MinHeight="700"
+        MinWidth="900"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{StaticResource PageBackgroundBrush}">
+    <Border Margin="18" Style="{StaticResource DialogCard}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border Padding="28,24,28,4">
+                <StackPanel>
+                    <TextBlock x:Name="TitleText"
+                               Text="Заказ"
+                               FontFamily="{StaticResource DisplayFont}"
+                               FontSize="22"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource DarkBrush}" />
+                    <TextBlock Text="Параметры выдачи и состав заказа."
+                               FontSize="12"
+                               Foreground="{StaticResource MutedBrush}"
+                               Margin="0,5,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="1" Padding="28,10,28,0">
+                <StackPanel>
+                    <TextBlock Text="Параметры заказа" Style="{StaticResource SectionTitle}" />
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="1.4*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Клиент" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Grid.Column="2" Text="Пункт выдачи" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Grid.Column="4" Text="Статус" Style="{StaticResource FieldLabel}" />
+
+                        <ComboBox x:Name="ClientBox" Grid.Row="1" Margin="0,7,0,0" />
+                        <ComboBox x:Name="PickupPointBox" Grid.Row="1" Grid.Column="2" Margin="0,7,0,0" />
+                        <ComboBox x:Name="StatusBox" Grid.Row="1" Grid.Column="4" Margin="0,7,0,0" />
+
+                        <TextBlock Grid.Row="2"
+                                   Text="Дата заказа"
+                                   Style="{StaticResource FieldLabel}"
+                                   Margin="0,14,0,0" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="2"
+                                   Text="Дата выдачи"
+                                   Style="{StaticResource FieldLabel}"
+                                   Margin="0,14,0,0" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="4"
+                                   Text="Код получения"
+                                   Style="{StaticResource FieldLabel}"
+                                   Margin="0,14,0,0" />
+
+                        <DatePicker x:Name="OrderDatePicker" Grid.Row="3" Margin="0,7,0,0" />
+                        <DatePicker x:Name="DeliveryDatePicker" Grid.Row="3" Grid.Column="2" Margin="0,7,0,0" />
+                        <TextBox x:Name="PickupCodeBox" Grid.Row="3" Grid.Column="4" Margin="0,7,0,0" MaxLength="6" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="2" Margin="0,18,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Padding="28,14,28,12"
+                        BorderBrush="{StaticResource BorderBrush}"
+                        BorderThickness="0,1,0,0">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Состав заказа" Style="{StaticResource SectionTitle}" />
+                            <TextBlock Text="Добавьте товары и укажите количество."
+                                       FontSize="11.5"
+                                       Foreground="{StaticResource SubtleBrush}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Height="36"
+                                    Margin="0,0,8,0"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Click="AddLine_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE710;"
+                                               FontFamily="{StaticResource IconFont}"
+                                               FontSize="11"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Добавить позицию"
+                                               Margin="7,0,0,0"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36"
+                                    Style="{StaticResource DangerButton}"
+                                    Click="RemoveLine_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE74D;"
+                                               FontFamily="{StaticResource IconFont}"
+                                               FontSize="11"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Text="Удалить позицию"
+                                               Margin="7,0,0,0"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Margin="28,10,28,18"
+                        Style="{StaticResource Card}"
+                        CornerRadius="10"
+                        ClipToBounds="True">
+                    <DataGrid x:Name="ItemsGrid"
+                              IsReadOnly="False"
+                              CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Товар" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding DataContext.Products, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                  DisplayMemberPath="DisplayName"
+                                                  SelectedValuePath="Id"
+                                                  SelectedValue="{Binding ProductId, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Количество" Width="180">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource CellTextBox}"
+                                                 TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="3"
+                    Background="#FCFAF7"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    CornerRadius="0,0,15,15"
+                    Padding="28,16,28,20">
+                <StackPanel>
+                    <Border Background="#FEF2F2"
+                            BorderBrush="#FECACA"
+                            BorderThickness="1"
+                            CornerRadius="9"
+                            Padding="12,10"
+                            Margin="0,0,0,14"
+                            Visibility="{Binding Visibility, ElementName=ErrorText}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7BA;"
+                                       FontFamily="{StaticResource IconFont}"
+                                       FontSize="12"
+                                       Foreground="{StaticResource DangerBrush}"
+                                       VerticalAlignment="Top"
+                                       Margin="0,1,0,0" />
+                            <TextBlock x:Name="ErrorText"
+                                       Style="{StaticResource ErrorText}"
+                                       Margin="8,0,0,0"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Отмена"
+                                Height="42"
+                                MinWidth="120"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource SecondaryButton}"
+                                IsCancel="True" />
+                        <Button x:Name="SaveButton"
+                                Content="Сохранить"
+                                Height="42"
+                                MinWidth="140"
+                                IsDefault="True"
+                                Click="Save_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

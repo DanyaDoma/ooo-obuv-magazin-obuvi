@@ -1,0 +1,29 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.slnx
+
+# Сборка
+bin/
+obj/
+out/
+TestResults/
+*.trx
+*.coverage
+coverage*/
+
+# NuGet
+*.nupkg
+packages/
+
+# Локальные секреты и настройки
+.env
+.env.*
+appsettings.Local.json
+
+# ОС
+.DS_Store
+Thumbs.db
